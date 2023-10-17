@@ -1,0 +1,27 @@
+name: build
+on: [push, pull_request]
+
+jobs:
+  Ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      
+      - name: Install Backend-Server
+        run: npm install
+
+      - name: Build Swagger
+        run: npm run build:swagger
+
+      - name: Build SDK
+        run: npm run build:sdk
+
+      - name: Compile Backend-Server
+        run: npm run build
+
+      - name: Run Test Program
+        run: npm run test
+
+      - name: EsLint
+        run: npm run eslint

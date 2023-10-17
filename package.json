@@ -1,0 +1,73 @@
+{
+  "private": true,
+  "name": "@ORGANIZATION/PROJECT",
+  "version": "0.1.0",
+  "description": "Starter kit of Nestia",
+  "main": "lib/index.js",
+  "scripts": {
+    "----------------------------------------------": "",
+    "build": "npm run build:sdk && npm run build:main && npm run build:test",
+    "build:api": "rimraf packages/api/lib && npm run build:sdk && tsc -p packages/api/tsconfig.json",
+    "build:main": "rimraf lib && tsc",
+    "build:sdk": "rimraf src/api/functional && nestia sdk",
+    "build:swagger": "npx nestia swagger",
+    "build:test": "rimraf bin && tsc -p test/tsconfig.json",
+    "dev": "npm run build:test -- --watch",
+    "eslint": "eslint src && eslint test",
+    "eslint:fix": "eslint --fix src && eslint --fix test",
+    "package:api": "npm run build:swagger && npm run build:api && cd packages/api && npm publish",
+    "prepare": "ts-patch install",
+    "prettier": "prettier src --write && prettier test --write",
+    "-----------------------------------------------": "",
+    "start": "node lib/executable/server",
+    "test": "node bin/test",
+    "------------------------------------------------": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/samchon/nestia-template"
+  },
+  "keywords": [
+    "nestia",
+    "template",
+    "boilerplate"
+  ],
+  "author": "AUTHOR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samchon/nestia-template/issues"
+  },
+  "homepage": "https://github.com/samchon/nestia-template#readme",
+  "devDependencies": {
+    "@nestia/e2e": "^0.3.6",
+    "@nestia/sdk": "^2.2.4",
+    "@trivago/prettier-plugin-sort-imports": "^3.3.1",
+    "@types/cli": "^0.11.21",
+    "@types/inquirer": "^8.2.5",
+    "@types/node": "^18.11.0",
+    "@types/uuid": "^8.3.4",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/parser": "^5.40.0",
+    "chalk": "^4.1.0",
+    "cli": "^1.0.1",
+    "eslint-plugin-deprecation": "^1.4.1",
+    "nestia": "^5.0.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.1",
+    "ts-patch": "^3.0.0",
+    "typescript": "^5.2.2",
+    "typescript-transform-paths": "^3.4.6"
+  },
+  "dependencies": {
+    "@nestia/core": "^2.2.4",
+    "serialize-error": "^4.1.0",
+    "tstl": "^2.5.13",
+    "typia": "^5.2.2",
+    "uuid": "^9.0.0"
+  },
+  "stackblitz": {
+    "startCommand": "npm run prepare && npm run build:test && npm run test"
+  }
+}
