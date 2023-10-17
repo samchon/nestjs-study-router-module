@@ -11,7 +11,7 @@ import { BbsArticleProvider } from "../providers/bbs/BbsArticleProvider";
  *
  * Remove it or make it to be real one.
  */
-@Controller("bbs/articles/:section")
+@Controller(":section/articles")
 export class BbsArticlesController {
     /**
      * List up entire articles, but paginated and summarized.
