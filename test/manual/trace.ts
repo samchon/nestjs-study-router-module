@@ -3,6 +3,20 @@ import { NestFactory } from "@nestjs/core";
 
 import { ApplicationModule } from "../../src/modules/ApplicationModule";
 
+const iterate = (name: string, modulo: any) => {
+    const controllers = Reflect.getMetadata("controllers", modulo) ?? [];
+    const imports = Reflect.getMetadata("imports", modulo) ?? [];
+    console.log({
+        type: typeof module,
+        from: name,
+        name: modulo.name,
+        controllers,
+        imports,
+    });
+
+    for (const i of imports) iterate(modulo.name, i);
+};
+
 const main = async () => {
     const app: INestApplication = await NestFactory.create(ApplicationModule);
     const d = app as any;
@@ -22,7 +36,7 @@ const main = async () => {
             ),
     );
     for (const p of dynamic.providers)
-        for (const v of p.useValue) console.log(v.path, v.children);
+        for (const v of p.useValue) iterate("root", v.module);
 };
 main().catch((exp) => {
     console.error(exp);
