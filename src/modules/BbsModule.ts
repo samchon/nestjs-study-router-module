@@ -1,20 +1,21 @@
 import { Module } from "@nestjs/common";
-import { RouterModule } from "@nestjs/core";
 
-import { BbsArticleCommentModule } from "./BbsArticleCommentModule";
-import { BbsArticleModule } from "./BbsArticleModule";
-import { CommonModule } from "./CommonModule";
+// import { RouterModule } from "@nestjs/core";
+import { BbsArticleCommentsController } from "../controllers/BbsArticleCommentsController";
+import { BbsArticlesController } from "../controllers/BbsArticlesController";
+
+// import { DynamicModule } from "./DynamicModule";
 
 @Module({
+    controllers: [BbsArticlesController, BbsArticleCommentsController],
     imports: [
-        BbsArticleModule,
-        BbsArticleCommentModule,
-        RouterModule.register([
-            {
-                path: "again-and-again",
-                module: CommonModule,
-            },
-        ]),
+        // DynamicModule,
+        // RouterModule.register([
+        //     {
+        //         path: "invert",
+        //         module: DynamicModule,
+        //     },
+        // ]),
     ],
 })
 export class BbsModule {}

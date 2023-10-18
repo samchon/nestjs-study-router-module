@@ -5,7 +5,7 @@ import typia, { tags } from "typia";
 import { IBbsComment } from "../api/structures/bbs/IBbsComment";
 import { IPage } from "../api/structures/common/IPage";
 
-@Controller(":section/articles/:articleId/comments")
+@Controller("bbs/:section/articles/:articleId/comments")
 export class BbsArticleCommentsController {
     @core.TypedRoute.Get()
     public async index(

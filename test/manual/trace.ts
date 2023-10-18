@@ -1,42 +1,30 @@
 import { INestApplication } from "@nestjs/common";
-import { NestFactory } from "@nestjs/core";
+import { MODULE_PATH } from "@nestjs/common/constants";
+import { NestContainer, NestFactory } from "@nestjs/core";
+import { Module } from "@nestjs/core/injector/module";
 
 import { ApplicationModule } from "../../src/modules/ApplicationModule";
 
-const iterate = (name: string, modulo: any) => {
-    const controllers = Reflect.getMetadata("controllers", modulo) ?? [];
-    const imports = Reflect.getMetadata("imports", modulo) ?? [];
-    console.log({
-        type: typeof module,
-        from: name,
-        name: modulo.name,
-        controllers,
-        imports,
-    });
-
-    for (const i of imports) iterate(modulo.name, i);
-};
-
 const main = async () => {
     const app: INestApplication = await NestFactory.create(ApplicationModule);
-    const d = app as any;
+    await app.setGlobalPrefix("api/v1");
 
-    const dynamic = [...d.container.dynamicModulesMetadata.values()].find(
-        (d) =>
-            Array.isArray(d.providers) &&
-            d.providers.every(
-                (p: any) =>
-                    typeof p.provide === "symbol" &&
-                    Array.isArray(p.useValue) &&
-                    p.useValue.every(
-                        (u: any) =>
-                            typeof u.path === "string" &&
-                            typeof u.module === "function",
-                    ),
-            ),
-    );
-    for (const p of dynamic.providers)
-        for (const v of p.useValue) iterate("root", v.module);
+    const container: NestContainer = (app as any).container as NestContainer;
+    const modules: Module[] = [...container.getModules().values()];
+
+    for (const m of modules.filter((m) => !!m.controllers.size)) {
+        console.log({
+            name: m.name,
+            paths:
+                Reflect.getMetadata(
+                    MODULE_PATH + container.getModules().applicationId,
+                    m.metatype,
+                ) ?? Reflect.getMetadata(MODULE_PATH, m.metatype),
+            metatype: m.metatype,
+            controllers: [...m.controllers.keys()],
+        });
+    }
+    await app.listen(8080);
 };
 main().catch((exp) => {
     console.error(exp);

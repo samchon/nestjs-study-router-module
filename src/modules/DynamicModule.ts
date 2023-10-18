@@ -6,20 +6,20 @@ import { CommonModule } from "./CommonModule";
 
 @Module({
     imports: [
+        CommonModule,
+        BbsModule,
         RouterModule.register([
             {
                 path: "common",
                 module: CommonModule,
             },
             {
-                path: "bbs",
+                path: "community",
                 module: BbsModule,
-                children: [
-                    {
-                        path: "again",
-                        module: CommonModule,
-                    },
-                ],
+            },
+            {
+                path: "customers/common",
+                module: CommonModule,
             },
         ]),
     ],
